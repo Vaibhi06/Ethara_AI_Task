@@ -118,8 +118,8 @@ img { max-width: 100%; }
 .badge-low { background: rgba(107,114,128,0.15); color: #9ca3af; }
 .badge-medium { background: rgba(245,158,11,0.2); color: var(--warning); }
 .badge-high { background: rgba(239,68,68,0.2); color: var(--danger); }
-.badge-admin { background: rgba(124,58,237,0.2); color: var(--accent-light); }
-.badge-member { background: rgba(255,255,255,0.08); color: var(--text-secondary); }
+.badge-admin { background: rgba(59, 130, 246, 0.15); color: var(--accent); }
+.badge-member { background: rgba(148, 163, 184, 0.15); color: var(--text-secondary); }
 
 /* ── Page Header ────────────────────────────────────────── */
 .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }

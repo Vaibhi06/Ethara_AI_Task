@@ -26,8 +26,8 @@ export default function Navbar({ title }) {
         <button onClick={() => navigate('/profile')} style={{
           border: '1px solid var(--border)', cursor: 'pointer',
           width: 36, height: 36, borderRadius: '50%',
-          background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center',
-          justifyContent: 'center', fontWeight: 700, color: '#fff', fontSize: 13,
+          background: 'var(--bg-primary)', display: 'flex', alignItems: 'center',
+          justifyContent: 'center', fontWeight: 700, color: 'var(--accent)', fontSize: 13,
           overflow: 'hidden', transition: 'all 0.2s',
           boxShadow: '0 0 0 2px var(--accent-glow)',
         }}>
