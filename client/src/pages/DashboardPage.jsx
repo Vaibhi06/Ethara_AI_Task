@@ -78,14 +78,14 @@ export default function DashboardPage() {
       {/* Stats */}
       <div className="stats-grid">
         {[
-          { label: 'Total Projects', value: stats?.projects ?? 0, icon: FolderKanban, color: 'purple', bg: 'rgba(124,58,237,0.15)' },
-          { label: 'Total Tasks', value: stats?.tasks?.total ?? 0, icon: CheckSquare, color: 'blue', bg: 'rgba(59,130,246,0.15)' },
-          { label: 'Completed', value: stats?.tasks?.done ?? 0, icon: TrendingUp, color: 'green', bg: 'rgba(16,185,129,0.15)' },
-          { label: 'Overdue', value: stats?.tasks?.overdue ?? 0, icon: AlertTriangle, color: 'red', bg: 'rgba(239,68,68,0.15)' },
+          { label: 'Total Projects', value: stats?.projects ?? 0, icon: FolderKanban, color: 'blue', bg: 'rgba(59, 130, 246, 0.1)' },
+          { label: 'Total Tasks', value: stats?.tasks?.total ?? 0, icon: CheckSquare, color: 'blue', bg: 'rgba(59, 130, 246, 0.1)' },
+          { label: 'Completed', value: stats?.tasks?.done ?? 0, icon: TrendingUp, color: 'blue', bg: 'rgba(59, 130, 246, 0.1)' },
+          { label: 'Overdue', value: stats?.tasks?.overdue ?? 0, icon: AlertTriangle, color: 'blue', bg: 'rgba(59, 130, 246, 0.1)' },
         ].map(s => (
           <div key={s.label} className={`card stat-card`} style={{ padding: 24 }}>
             <div style={{ width: 44, height: 44, borderRadius: 10, background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-              <s.icon size={22} style={{ color: s.color === 'purple' ? 'var(--accent-light)' : s.color === 'blue' ? 'var(--info)' : s.color === 'green' ? 'var(--success)' : 'var(--danger)' }} />
+              <s.icon size={22} style={{ color: 'var(--accent)' }} />
             </div>
             <div style={{ fontSize: 32, fontWeight: 800 }}>{s.value}</div>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 6, fontWeight: 500 }}>{s.label}</div>
