@@ -84,9 +84,6 @@ export default function DashboardPage() {
           { label: 'Overdue', value: stats?.tasks?.overdue ?? 0, icon: AlertTriangle, color: 'blue', bg: 'rgba(59, 130, 246, 0.1)' },
         ].map(s => (
           <div key={s.label} className={`card stat-card`} style={{ padding: 24 }}>
-            <div style={{ width: 44, height: 44, borderRadius: 10, background: s.bg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-              <s.icon size={22} style={{ color: 'var(--accent)' }} />
-            </div>
             <div style={{ fontSize: 32, fontWeight: 800 }}>{s.value}</div>
             <div style={{ fontSize: 13, color: 'var(--text-secondary)', marginTop: 6, fontWeight: 500 }}>{s.label}</div>
           </div>
