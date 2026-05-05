@@ -28,11 +28,11 @@ export default function Sidebar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{
             width: 38, height: 38, borderRadius: 10,
-            background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)',
+            background: 'var(--bg-card)', border: '1px solid var(--border)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: 'var(--shadow)',
           }}>
-            <Zap size={20} color="#fff" fill="#fff" />
+            <Zap size={20} color="var(--accent)" fill="var(--accent)" />
           </div>
           <div>
             <div style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.02em' }}>TaskFlow</div>
@@ -48,10 +48,10 @@ export default function Sidebar() {
             display: 'flex', alignItems: 'center', gap: 12,
             padding: '11px 14px', borderRadius: 10, fontSize: 14, fontWeight: 600,
             textDecoration: 'none', transition: 'all 0.2s ease',
-            background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
-            color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
+            background: isActive ? 'var(--bg-card)' : 'transparent',
+            color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
             boxShadow: isActive ? 'var(--shadow)' : 'none',
-            border: isActive ? '1px solid rgba(255,255,255,0.2)' : '1px solid transparent',
+            border: isActive ? '1px solid var(--border)' : '1px solid transparent',
           })}>
             <Icon size={18} />
             {label}
@@ -63,10 +63,10 @@ export default function Sidebar() {
             display: 'flex', alignItems: 'center', gap: 12,
             padding: '11px 14px', borderRadius: 10, fontSize: 14, fontWeight: 600,
             textDecoration: 'none', transition: 'all 0.2s ease',
-            background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
-            color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
+            background: isActive ? 'var(--bg-card)' : 'transparent',
+            color: isActive ? 'var(--accent)' : 'var(--text-secondary)',
             boxShadow: isActive ? 'var(--shadow)' : 'none',
-            border: isActive ? '1px solid rgba(255,255,255,0.2)' : '1px solid transparent',
+            border: isActive ? '1px solid var(--border)' : '1px solid transparent',
           })}>
             <Users size={18} />
             Team
@@ -81,7 +81,7 @@ export default function Sidebar() {
           padding: '10px 12px', borderRadius: 10, textDecoration: 'none',
           transition: 'all 0.2s', marginBottom: 8,
         }} className="card">
-          <div className="avatar avatar-sm" style={{ background: 'rgba(255,255,255,0.2)', color: '#fff', width: 34, height: 34, fontSize: 13 }}>
+          <div className="avatar avatar-sm" style={{ background: 'var(--bg-primary)', color: 'var(--accent)', border: '1px solid var(--border)', width: 34, height: 34, fontSize: 13 }}>
             {user?.avatar
               ? <img src={user.avatar} alt={user.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               : getInitials(user?.name)}
