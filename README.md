@@ -3,6 +3,8 @@
 
 Full-stack web app built with **React + Node.js/Express + PostgreSQL**, deployed on **Railway**.
 
+Live: https://etharaaitask-production-0d25.up.railway.app
+
 ---
 
 ## ✨ Features
