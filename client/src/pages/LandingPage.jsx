@@ -4,11 +4,19 @@ import AnimatedBackground from '../components/ui/AnimatedBackground';
 
 export default function LandingPage() {
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <AnimatedBackground />
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#f8fafc', padding: '24px' }}>
       
-      {/* Navbar */}
-      <nav style={{ padding: '24px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
+      {/* Huge Blue Hero Card */}
+      <div style={{ 
+        position: 'relative', overflow: 'hidden',
+        background: 'linear-gradient(135deg, #6fb1fc, #4364f7, #3f5efb)', 
+        borderRadius: '40px', flex: 1, display: 'flex', flexDirection: 'column',
+        boxShadow: '0 20px 40px rgba(59, 130, 246, 0.15)'
+      }}>
+        <AnimatedBackground />
+
+        {/* Navbar inside blue card */}
+        <nav style={{ padding: '24px 48px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ 
             width: 32, height: 32, 
@@ -77,9 +85,16 @@ export default function LandingPage() {
             ))}
           </div>
 
-          <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(transparent, rgba(255,255,255,0.1))' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '50%', background: 'linear-gradient(transparent, rgba(67, 100, 247, 0.3))' }} />
         </div>
       </main>
+      </div>
+
+      {/* Features Section (White Background) */}
+      <section style={{ padding: '100px 20px', textAlign: 'center', color: 'var(--text-primary)' }}>
+        <h2 style={{ fontSize: 40, fontWeight: 800, marginBottom: 16 }}>Features designed for your success.</h2>
+        <p style={{ fontSize: 16, color: 'var(--text-secondary)' }}>Explore the features designed to keep you organized and on track.</p>
+      </section>
     </div>
   );
 }
