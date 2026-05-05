@@ -90,14 +90,16 @@ app.use((err, req, res, next) => {
 // ─── Start Server ──────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
-const start = async () => {
-  await initDB();
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 TaskFlow API running on port ${PORT}`);
-    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  });
-};
+// Start listening FIRST so Railway healthcheck passes immediately,
+// then connect to DB in the background
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 TaskFlow API running on port ${PORT}`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 
-start();
+  // DB init runs after server is already accepting requests
+  initDB().catch((err) => {
+    console.error('❌ Background DB init error:', err.message);
+  });
+});
 
 module.exports = app;
