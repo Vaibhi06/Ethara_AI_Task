@@ -18,18 +18,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Handle Google OAuth callback token
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get('token');
-    if (token && window.location.pathname === '/auth/google/callback') {
-      localStorage.setItem('token', token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchMe().then(() => {
-        window.history.replaceState({}, '', '/dashboard');
-      });
-    }
-  }, []);
+  // Google OAuth callback is handled cleanly in App.jsx GoogleCallback component now
 
   const fetchMe = async () => {
     try {

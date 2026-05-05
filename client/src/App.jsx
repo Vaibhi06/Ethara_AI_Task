@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import api from './services/api';
 import { useAuth } from './context/AuthContext';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
@@ -20,6 +21,7 @@ function GoogleCallback() {
     const token = params.get('token');
     if (token) {
       localStorage.setItem('token', token);
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Critical: Set token on API client
       fetchMe().then(() => {
         window.location.replace('/dashboard');
       });
