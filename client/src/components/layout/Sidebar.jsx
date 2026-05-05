@@ -20,7 +20,7 @@ export default function Sidebar() {
   const SidebarContent = () => (
     <div style={{
       width: 260, height: '100vh', position: 'fixed', top: 0, left: 0,
-      background: 'var(--bg-secondary)', borderRight: '1px solid var(--border)',
+      background: 'rgba(255, 255, 255, 0.05)', backdropFilter: 'blur(20px)', borderRight: '1px solid var(--border)',
       display: 'flex', flexDirection: 'column', zIndex: 100,
     }}>
       {/* Logo */}
@@ -28,9 +28,9 @@ export default function Sidebar() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{
             width: 38, height: 38, borderRadius: 10,
-            background: 'linear-gradient(135deg, var(--accent), var(--accent-light))',
+            background: 'rgba(255,255,255,0.2)', border: '1px solid rgba(255,255,255,0.3)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 4px 12px var(--accent-glow)',
+            boxShadow: 'var(--shadow)',
           }}>
             <Zap size={20} color="#fff" fill="#fff" />
           </div>
@@ -48,9 +48,10 @@ export default function Sidebar() {
             display: 'flex', alignItems: 'center', gap: 12,
             padding: '11px 14px', borderRadius: 10, fontSize: 14, fontWeight: 600,
             textDecoration: 'none', transition: 'all 0.2s ease',
-            background: isActive ? 'linear-gradient(135deg, var(--accent), var(--accent-light))' : 'transparent',
-            color: isActive ? '#fff' : 'var(--text-secondary)',
-            boxShadow: isActive ? '0 4px 12px var(--accent-glow)' : 'none',
+            background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
+            color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
+            boxShadow: isActive ? 'var(--shadow)' : 'none',
+            border: isActive ? '1px solid rgba(255,255,255,0.2)' : '1px solid transparent',
           })}>
             <Icon size={18} />
             {label}
@@ -62,9 +63,10 @@ export default function Sidebar() {
             display: 'flex', alignItems: 'center', gap: 12,
             padding: '11px 14px', borderRadius: 10, fontSize: 14, fontWeight: 600,
             textDecoration: 'none', transition: 'all 0.2s ease',
-            background: isActive ? 'linear-gradient(135deg, var(--accent), var(--accent-light))' : 'transparent',
-            color: isActive ? '#fff' : 'var(--text-secondary)',
-            boxShadow: isActive ? '0 4px 12px var(--accent-glow)' : 'none',
+            background: isActive ? 'rgba(255,255,255,0.15)' : 'transparent',
+            color: isActive ? '#fff' : 'rgba(255,255,255,0.7)',
+            boxShadow: isActive ? 'var(--shadow)' : 'none',
+            border: isActive ? '1px solid rgba(255,255,255,0.2)' : '1px solid transparent',
           })}>
             <Users size={18} />
             Team
@@ -79,7 +81,7 @@ export default function Sidebar() {
           padding: '10px 12px', borderRadius: 10, textDecoration: 'none',
           transition: 'all 0.2s', marginBottom: 8,
         }} className="card">
-          <div className="avatar avatar-sm" style={{ background: 'var(--accent)', width: 34, height: 34, fontSize: 13 }}>
+          <div className="avatar avatar-sm" style={{ background: 'rgba(255,255,255,0.2)', color: '#fff', width: 34, height: 34, fontSize: 13 }}>
             {user?.avatar
               ? <img src={user.avatar} alt={user.name} style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }} />
               : getInitials(user?.name)}

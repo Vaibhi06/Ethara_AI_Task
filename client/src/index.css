@@ -26,21 +26,7 @@
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-[data-theme="light"] {
-  --bg-primary: #f0f0ff;
-  --bg-secondary: #e8e8f8;
-  --bg-card: rgba(255,255,255,0.8);
-  --bg-card-hover: rgba(255,255,255,0.95);
-  --border: rgba(109,40,217,0.12);
-  --accent: #6d28d9;
-  --accent-light: #7c3aed;
-  --accent-glow: rgba(109,40,217,0.15);
-  --text-primary: #1a1a2e;
-  --text-secondary: rgba(26,26,46,0.65);
-  --text-muted: rgba(26,26,46,0.4);
-  --shadow: 0 4px 24px rgba(109,40,217,0.1);
-  --shadow-glow: 0 0 40px rgba(109,40,217,0.08);
-}
+
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 

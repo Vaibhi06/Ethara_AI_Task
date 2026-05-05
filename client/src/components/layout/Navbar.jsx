@@ -1,12 +1,10 @@
 import React from 'react';
-import { Sun, Moon, Bell } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { Bell } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { getInitials } from '../../utils/helpers';
 import { useNavigate } from 'react-router-dom';
 
 export default function Navbar({ title }) {
-  const { theme, toggleTheme } = useTheme();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -14,27 +12,21 @@ export default function Navbar({ title }) {
     <header style={{
       height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between',
       padding: '0 32px', borderBottom: '1px solid var(--border)',
-      background: 'var(--bg-secondary)', position: 'sticky', top: 0, zIndex: 50,
+      background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)', position: 'sticky', top: 0, zIndex: 50,
     }}>
       <h1 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>{title}</h1>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-        {/* Theme toggle */}
-        <button onClick={toggleTheme} className="btn btn-ghost" style={{ padding: 8, borderRadius: 8 }}
-          title={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}>
-          {theme === 'dark'
-            ? <Sun size={18} style={{ color: 'var(--warning)' }} />
-            : <Moon size={18} style={{ color: 'var(--accent)' }} />}
-        </button>
+
 
         {/* Role badge */}
         <span className={`badge badge-${user?.role}`}>{user?.role}</span>
 
         {/* Avatar */}
         <button onClick={() => navigate('/profile')} style={{
-          background: 'none', border: 'none', cursor: 'pointer',
+          border: '1px solid var(--border)', cursor: 'pointer',
           width: 36, height: 36, borderRadius: '50%',
-          background: 'var(--accent)', display: 'flex', alignItems: 'center',
+          background: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center',
           justifyContent: 'center', fontWeight: 700, color: '#fff', fontSize: 13,
           overflow: 'hidden', transition: 'all 0.2s',
           boxShadow: '0 0 0 2px var(--accent-glow)',
