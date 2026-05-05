@@ -69,8 +69,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const loginWithGoogle = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-    window.location.href = `${apiUrl}/api/auth/google`;
+    // In production: use relative URL (same Railway domain)
+    // In development: use full localhost URL
+    const base = import.meta.env.VITE_API_URL || '';
+    window.location.href = `${base}/api/auth/google`;
   };
 
   return (
