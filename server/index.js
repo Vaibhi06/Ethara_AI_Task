@@ -17,6 +17,11 @@ const userRoutes = require('./routes/users');
 
 const app = express();
 
+// ─── Trust Proxy (Crucial for Railway/Render) ──────────────────────────────────
+// Tells Express it is behind a proxy (load balancer) and should trust the X-Forwarded-* headers.
+// This ensures req.protocol is 'https' instead of 'http', which fixes OAuth redirects and secure cookies.
+app.set('trust proxy', 1);
+
 // ─── Security & Logging ────────────────────────────────────────────────────────
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));

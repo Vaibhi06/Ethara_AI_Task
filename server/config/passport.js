@@ -47,8 +47,8 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        // Relative path works on any domain (local or Railway) without needing SERVER_URL
-        callbackURL: '/api/auth/google/callback',
+        // Using absolute URL prevents http/https mismatch issues behind Railway's proxy
+        callbackURL: `${process.env.SERVER_URL || 'http://localhost:5000'}/api/auth/google/callback`,
         scope: ['profile', 'email'],
       },
       async (accessToken, refreshToken, profile, done) => {
