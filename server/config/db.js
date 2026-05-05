@@ -2,6 +2,13 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
+// ─── Guard: check DATABASE_URL exists ─────────────────────────────────────────
+if (!process.env.DATABASE_URL) {
+  console.error('❌ DATABASE_URL is not set!');
+  console.error('   → On Railway: add variable DATABASE_URL = ${{ Postgres.DATABASE_URL }}');
+  console.error('   → Locally: set it in server/.env');
+}
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production'
@@ -14,6 +21,11 @@ const pool = new Pool({
 
 // Test connection and initialize schema — retries every 5s, does NOT crash server
 const initDB = async (retries = 10) => {
+  if (!process.env.DATABASE_URL) {
+    console.error('❌ Skipping DB init — DATABASE_URL is not set.');
+    return;
+  }
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const client = await pool.connect();
@@ -30,12 +42,12 @@ const initDB = async (retries = 10) => {
       client.release();
       return; // success
     } catch (error) {
-      console.error(`❌ DB attempt ${attempt}/${retries}: ${error.message}`);
+      const msg = error?.message || error?.code || JSON.stringify(error) || 'unknown error';
+      console.error(`❌ DB attempt ${attempt}/${retries}: ${msg}`);
       if (attempt < retries) {
         console.log('⏳ Retrying in 5s...');
         await new Promise((r) => setTimeout(r, 5000));
       } else {
-        // Do NOT call process.exit — server stays alive so healthcheck passes
         console.error('❌ All DB retries exhausted. Check DATABASE_URL in Railway Variables.');
       }
     }

@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const session = require('express-session');
+const cookieSession = require('cookie-session');
 const path = require('path');
 
 const { initDB } = require('./config/db');
@@ -39,19 +39,30 @@ app.use(
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ─── Session (for Passport OAuth) ─────────────────────────────────────────────
+// ─── Session (for Passport Google OAuth redirect only) ───────────────────────
+// cookie-session stores data in a signed cookie — no server-side store needed,
+// no MemoryStore production warning, works perfectly on Railway single containers
 app.use(
-  session({
+  cookieSession({
+    name: 'taskflow_session',
     secret: process.env.SESSION_SECRET || 'taskflow_session_secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    },
+    maxAge: 10 * 60 * 1000, // 10 min — only needed for OAuth redirect flow
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    sameSite: 'lax',
   })
 );
+
+// Compatibility shim: passport expects req.session.regenerate and req.session.save
+app.use((req, res, next) => {
+  if (req.session && !req.session.regenerate) {
+    req.session.regenerate = (cb) => cb();
+  }
+  if (req.session && !req.session.save) {
+    req.session.save = (cb) => cb();
+  }
+  next();
+});
 
 const passport = require('passport');
 app.use(passport.initialize());
