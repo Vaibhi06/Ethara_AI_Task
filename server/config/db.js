@@ -9,11 +9,22 @@ if (!process.env.DATABASE_URL) {
   console.error('   → Locally: set it in server/.env');
 }
 
+// ─── Smart SSL detection ───────────────────────────────────────────────────────
+// Railway internal URL (postgres.railway.internal) → NO SSL needed
+// Railway public URL (rlwy.net) or other external hosts → SSL required
+const dbUrl = process.env.DATABASE_URL || '';
+const isInternalRailway = dbUrl.includes('railway.internal');
+const isProduction = process.env.NODE_ENV === 'production';
+
+const sslConfig = isProduction && !isInternalRailway
+  ? { rejectUnauthorized: false }  // public/external PostgreSQL — needs SSL
+  : false;                          // internal Railway network — no SSL needed
+
+console.log(`🔌 DB SSL mode: ${sslConfig ? 'enabled (public host)' : 'disabled (internal/local)'}`);
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production'
-    ? { rejectUnauthorized: false }  // Railway PostgreSQL requires SSL
-    : false,
+  connectionString: dbUrl,
+  ssl: sslConfig,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000,
@@ -49,6 +60,7 @@ const initDB = async (retries = 10) => {
         await new Promise((r) => setTimeout(r, 5000));
       } else {
         console.error('❌ All DB retries exhausted. Check DATABASE_URL in Railway Variables.');
+        console.error(`   Current DATABASE_URL host: ${dbUrl.split('@')[1]?.split('/')[0] || 'unknown'}`);
       }
     }
   }
