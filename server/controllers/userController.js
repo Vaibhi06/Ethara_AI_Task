@@ -4,7 +4,7 @@ const { pool } = require('../config/db');
 const getUsers = async (req, res) => {
   try {
     const result = await pool.query(
-      `SELECT u.id, u.name, u.email, u.avatar, u.role, u.created_at,
+      `SELECT u.id, u.name, u.email, u.avatar, u.role, u.is_approved, u.created_at,
         COUNT(DISTINCT pm.project_id) AS project_count,
         COUNT(DISTINCT t.id) AS task_count
        FROM users u
@@ -62,4 +62,22 @@ const updateUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, updateUser };
+const approveUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query(
+      `UPDATE users SET is_approved = TRUE WHERE id = $1 RETURNING id, name, is_approved`,
+      [id]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    res.json({ success: true, message: 'User approved successfully!', user: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Server error.' });
+  }
+};
+
+module.exports = { getUsers, getUser, updateUser, approveUser };

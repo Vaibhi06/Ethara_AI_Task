@@ -16,6 +16,13 @@ Full-stack web app built with **React + Node.js/Express + PostgreSQL**, deployed
 
 ---
 
+## 🔑 Default Admin Credentials
+When you deploy the application, a default system administrator account is automatically created.
+- **Email:** `admin@ethara.com`
+- **Password:** `Admin123!`
+
+---
+
 ## 🛠 Tech Stack
 | Layer | Tech |
 |---|---|

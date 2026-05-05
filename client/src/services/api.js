@@ -73,6 +73,7 @@ export const usersAPI = {
   getAll: () => api.get('/users'),
   getOne: (id) => api.get(`/users/${id}`),
   update: (id, data) => api.put(`/users/${id}`, data),
+  approve: (id) => api.patch(`/users/${id}/approve`),
 };
 
 export default api;

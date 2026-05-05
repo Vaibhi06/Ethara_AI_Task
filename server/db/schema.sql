@@ -16,9 +16,13 @@ CREATE TABLE IF NOT EXISTS users (
   avatar      VARCHAR(500),
   google_id   VARCHAR(255) UNIQUE,
   role        VARCHAR(10) NOT NULL DEFAULT 'member' CHECK (role IN ('admin', 'member')),
+  is_approved BOOLEAN DEFAULT FALSE,
   created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
   updated_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+-- Add is_approved to existing users table if it doesn't exist
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_approved BOOLEAN DEFAULT FALSE;
 
 -- ============================================
 -- PROJECTS TABLE
@@ -91,3 +95,15 @@ CREATE TRIGGER update_projects_updated_at BEFORE UPDATE ON projects
 
 CREATE TRIGGER update_tasks_updated_at BEFORE UPDATE ON tasks
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- ============================================
+-- SEED DEFAULT ADMIN
+-- ============================================
+INSERT INTO users (name, email, password, role, is_approved)
+VALUES (
+  'System Admin',
+  'admin@ethara.com',
+  crypt('Admin123!', gen_salt('bf', 12)),
+  'admin',
+  TRUE
+) ON CONFLICT (email) DO NOTHING;

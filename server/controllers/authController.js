@@ -23,21 +23,18 @@ const register = async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // Create user
+    // Create user (unapproved by default)
     const result = await pool.query(
-      `INSERT INTO users (name, email, password, role)
-       VALUES ($1, $2, $3, 'member') RETURNING id, name, email, avatar, role, created_at`,
+      `INSERT INTO users (name, email, password, role, is_approved)
+       VALUES ($1, $2, $3, 'member', FALSE) RETURNING id, name, email, avatar, role, created_at`,
       [name.trim(), email.toLowerCase(), hashedPassword]
     );
 
     const user = result.rows[0];
-    const token = generateToken({ id: user.id, email: user.email, role: user.role });
-
+    // Do not return token yet — they need approval
     res.status(201).json({
       success: true,
-      message: 'Account created successfully!',
-      token,
-      user,
+      message: 'Account created! Please wait for admin approval before logging in.',
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -78,10 +75,12 @@ const login = (req, res, next) => {
 const googleCallback = (req, res) => {
   try {
     const user = req.user;
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+
+    // Google users are auto-approved, generate token directly
     const token = generateToken({ id: user.id, email: user.email, role: user.role });
 
     // Redirect to frontend with token in URL param
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
     res.redirect(`${clientUrl}/auth/google/callback?token=${token}`);
   } catch (error) {
     const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';

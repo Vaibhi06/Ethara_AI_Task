@@ -43,11 +43,8 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     const res = await api.post('/auth/register', { name, email, password });
-    const { token, user } = res.data;
-    localStorage.setItem('token', token);
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    setUser(user);
-    return user;
+    // Local registration requires admin approval, so we don't log them in yet
+    return res.data;
   };
 
   const logout = () => {

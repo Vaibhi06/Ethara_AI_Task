@@ -9,12 +9,27 @@ export default function UsersPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+  const loadUsers = () => {
+    setLoading(true);
     usersAPI.getAll()
       .then(r => setUsers(r.data.users))
       .catch(() => toast.error('Failed to load users'))
       .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    loadUsers();
   }, []);
+
+  const handleApprove = async (id) => {
+    try {
+      await usersAPI.approve(id);
+      toast.success('User approved!');
+      loadUsers();
+    } catch (error) {
+      toast.error('Failed to approve user');
+    }
+  };
 
   return (
     <Layout title="Team">
@@ -34,7 +49,7 @@ export default function UsersPage() {
           <div className="table-wrapper">
             <table>
               <thead>
-                <tr><th>User</th><th>Role</th><th>Projects</th><th>Tasks</th><th>Joined</th></tr>
+                <tr><th>User</th><th>Role</th><th>Status</th><th>Projects</th><th>Tasks</th><th>Joined</th></tr>
               </thead>
               <tbody>
                 {users.map(u => (
@@ -49,6 +64,13 @@ export default function UsersPage() {
                       </div>
                     </td>
                     <td><span className={`badge badge-${u.role}`}>{u.role}</span></td>
+                    <td>
+                      {u.is_approved ? (
+                        <span className="badge badge-done">Approved</span>
+                      ) : (
+                        <button onClick={() => handleApprove(u.id)} className="btn btn-sm btn-primary">Approve</button>
+                      )}
+                    </td>
                     <td style={{ fontSize: 14, fontWeight: 600 }}>{u.project_count}</td>
                     <td style={{ fontSize: 14, fontWeight: 600 }}>{u.task_count}</td>
                     <td style={{ fontSize: 13, color: 'var(--text-secondary)' }}>{formatDate(u.created_at)}</td>

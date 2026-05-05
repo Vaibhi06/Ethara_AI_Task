@@ -16,8 +16,8 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       await registerUser(data.name, data.email, data.password);
-      toast.success('Account created! Welcome to TaskFlow 🎉');
-      navigate('/dashboard');
+      toast.success('Account created! Pending admin approval.');
+      navigate('/login?error=pending_approval');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Registration failed. Please try again.');
     } finally { setLoading(false); }

@@ -20,6 +20,10 @@ passport.use(
           return done(null, false, { message: 'Invalid email or password' });
         }
 
+        if (!user.is_approved && user.role !== 'admin') {
+          return done(null, false, { message: 'Your account is pending admin approval.' });
+        }
+
         if (!user.password) {
           return done(null, false, {
             message: 'This account uses Google Sign-In. Please login with Google.',
@@ -75,6 +79,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
           );
 
           if (result.rows.length > 0) {
+            // Link Google account to existing user
             const updated = await pool.query(
               'UPDATE users SET google_id = $1, avatar = COALESCE(avatar, $2) WHERE email = $3 RETURNING *',
               [googleId, avatar, email]
@@ -82,10 +87,10 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
             return done(null, updated.rows[0]);
           }
 
-          // Create new user
+          // Create new user (Google users are auto-approved per user request)
           const newUser = await pool.query(
-            `INSERT INTO users (name, email, google_id, avatar, role)
-             VALUES ($1, $2, $3, $4, 'member') RETURNING *`,
+            `INSERT INTO users (name, email, google_id, avatar, role, is_approved)
+             VALUES ($1, $2, $3, $4, 'member', TRUE) RETURNING *`,
             [name, email, googleId, avatar]
           );
 

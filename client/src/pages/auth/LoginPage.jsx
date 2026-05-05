@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Mail, Lock, Eye, EyeOff, Zap, Loader } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -11,7 +11,18 @@ export default function LoginPage() {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const location = useLocation();
   const { register, handleSubmit, formState: { errors } } = useForm();
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const error = params.get('error');
+    if (error === 'pending_approval') {
+      toast.error('Your account is pending admin approval.');
+    } else if (error) {
+      toast.error('Authentication failed.');
+    }
+  }, [location]);
 
   const onSubmit = async (data) => {
     setLoading(true);
