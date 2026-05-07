@@ -12,7 +12,7 @@ import TasksPage from './pages/TasksPage';
 import ProfilePage from './pages/ProfilePage';
 import UsersPage from './pages/UsersPage';
 
-// Google OAuth callback handler
+// handle google oauth redirect
 function GoogleCallback() {
   const { fetchMe } = useAuth();
   const location = useLocation();
@@ -22,12 +22,12 @@ function GoogleCallback() {
     const token = params.get('token');
     if (token) {
       localStorage.setItem('token', token);
-      api.defaults.headers.common['Authorization'] = `Bearer ${token}`; // Critical: Set token on API client
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`; // make sure api client has token
       fetchMe().then(() => {
         window.location.replace('/dashboard');
       });
     } else {
-      window.location.replace('/login?error=google_failed');
+      window.location.replace('/login?error=google_failed'); // fallback just in case
     }
   }, []);
 
@@ -53,6 +53,7 @@ function PrivateRoute({ children }) {
 
 function AdminRoute({ children }) {
   const { user } = useAuth();
+  // bounce non-admins to dashboard
   return user?.role === 'admin' ? children : <Navigate to="/dashboard" replace />;
 }
 

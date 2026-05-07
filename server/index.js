@@ -17,16 +17,14 @@ const userRoutes = require('./routes/users');
 
 const app = express();
 
-// ─── Trust Proxy (Crucial for Railway/Render) ──────────────────────────────────
-// Tells Express it is behind a proxy (load balancer) and should trust the X-Forwarded-* headers.
-// This ensures req.protocol is 'https' instead of 'http', which fixes OAuth redirects and secure cookies.
+// trust proxy for railway load balancer
 app.set('trust proxy', 1);
 
-// ─── Security & Logging ────────────────────────────────────────────────────────
+// security & logging
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
-// ─── CORS ──────────────────────────────────────────────────────────────────────
+// cors setup
 app.use(
   cors({
     origin: [
@@ -40,13 +38,13 @@ app.use(
   })
 );
 
-// ─── Body Parsing ──────────────────────────────────────────────────────────────
+// parsers
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// ─── Session (for Passport Google OAuth redirect only) ───────────────────────
-// cookie-session stores data in a signed cookie — no server-side store needed,
-// no MemoryStore production warning, works perfectly on Railway single containers
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// session for google oauth
 app.use(
   cookieSession({
     name: 'taskflow_session',
@@ -73,19 +71,19 @@ const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-// ─── API Routes ────────────────────────────────────────────────────────────────
+// routes
 app.use('/api/auth', authRoutes);
 app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/users', userRoutes);
 
-// ─── Health Check ──────────────────────────────────────────────────────────────
+// health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString(), env: process.env.NODE_ENV });
 });
 
-// ─── Serve React Frontend in Production ───────────────────────────────────────
+// serve frontend in production
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../client/dist');
   app.use(express.static(distPath));
@@ -94,7 +92,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-// ─── Global Error Handler ──────────────────────────────────────────────────────
+// global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
   res.status(err.status || 500).json({
@@ -103,7 +101,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ─── Start Server ──────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 5000;
 
 // Start listening FIRST so Railway healthcheck passes immediately,

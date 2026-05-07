@@ -3,7 +3,7 @@ const passport = require('passport');
 const { pool } = require('../config/db');
 const { generateToken } = require('../utils/jwtUtils');
 
-// ─── Register (Email + Password) ──────────────────────────────────────────────
+// handle user registration
 const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -42,7 +42,7 @@ const register = async (req, res) => {
   }
 };
 
-// ─── Login (Email + Password) ──────────────────────────────────────────────────
+// login handler
 const login = (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err) return next(err);
@@ -71,7 +71,7 @@ const login = (req, res, next) => {
   })(req, res, next);
 };
 
-// ─── Google OAuth Callback ─────────────────────────────────────────────────────
+// oauth callback from google
 const googleCallback = (req, res) => {
   try {
     const user = req.user;
@@ -88,7 +88,7 @@ const googleCallback = (req, res) => {
   }
 };
 
-// ─── Get Current User ──────────────────────────────────────────────────────────
+// get current user info
 const getMe = async (req, res) => {
   try {
     const result = await pool.query(
@@ -110,7 +110,7 @@ const getMe = async (req, res) => {
   }
 };
 
-// ─── Logout ───────────────────────────────────────────────────────────────────
+// logout handler
 const logout = (req, res) => {
   // JWT is stateless — client deletes token
   res.json({ success: true, message: 'Logged out successfully.' });

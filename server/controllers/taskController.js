@@ -1,6 +1,6 @@
 const { pool } = require('../config/db');
 
-// ─── Get Tasks (with filters) ──────────────────────────────────────────────────
+// fetch tasks with optional filters
 const getTasks = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -50,6 +50,9 @@ const getTasks = async (req, res) => {
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
+    // build the query
+    // TODO: need to refactor this eventually, it's getting huge
+
     const query = `
       SELECT
         t.*,
@@ -77,7 +80,7 @@ const getTasks = async (req, res) => {
   }
 };
 
-// ─── Get Single Task ───────────────────────────────────────────────────────────
+// get a single task
 const getTask = async (req, res) => {
   try {
     const { id } = req.params;
@@ -110,7 +113,7 @@ const getTask = async (req, res) => {
   }
 };
 
-// ─── Create Task ───────────────────────────────────────────────────────────────
+// create new task
 const createTask = async (req, res) => {
   try {
     const { title, description, project_id, assigned_to, priority, due_date, status } = req.body;
@@ -154,7 +157,7 @@ const createTask = async (req, res) => {
   }
 };
 
-// ─── Update Task ───────────────────────────────────────────────────────────────
+// full task update
 const updateTask = async (req, res) => {
   try {
     const { id } = req.params;
@@ -190,12 +193,12 @@ const updateTask = async (req, res) => {
       task: result.rows[0],
     });
   } catch (error) {
-    console.error('updateTask error:', error);
+    console.error('err updating task:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
-// ─── Update Task Status Only (Members can do this) ────────────────────────────
+// update just the status (used for drag and drop)
 const updateTaskStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -249,7 +252,7 @@ const updateTaskStatus = async (req, res) => {
   }
 };
 
-// ─── Delete Task ───────────────────────────────────────────────────────────────
+// delete task
 const deleteTask = async (req, res) => {
   try {
     const { id } = req.params;

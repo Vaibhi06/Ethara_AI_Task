@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const { pool } = require('../config/db');
 
+// get all users for the admin dashboard
 const getUsers = async (req, res) => {
   try {
     const result = await pool.query(
@@ -62,6 +63,7 @@ const updateUser = async (req, res) => {
   }
 };
 
+// approve a pending user
 const approveUser = async (req, res) => {
   try {
     const { id } = req.params;

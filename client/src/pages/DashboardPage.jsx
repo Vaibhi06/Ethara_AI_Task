@@ -44,6 +44,7 @@ export default function DashboardPage() {
     </Layout>
   );
 
+  // format data for the pie chart
   const statusData = (stats?.tasksByStatus || []).map(r => ({
     name: r.status === 'in_progress' ? 'In Progress' : r.status.charAt(0).toUpperCase() + r.status.slice(1),
     value: parseInt(r.count),
@@ -56,6 +57,7 @@ export default function DashboardPage() {
     fill: PRIORITY_COLORS[r.priority],
   }));
 
+  // custom tooltip for charts
   const CustomTooltip = ({ active, payload, label }) => {
     if (!active || !payload?.length) return null;
     return (
@@ -75,7 +77,6 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Stats */}
       <div className="stats-grid">
         {[
           { label: 'Total Projects', value: stats?.projects ?? 0, icon: FolderKanban, color: 'blue', bg: 'rgba(59, 130, 246, 0.1)' },
@@ -90,7 +91,6 @@ export default function DashboardPage() {
         ))}
       </div>
 
-      {/* Charts */}
       <div className="two-col" style={{ marginBottom: 32 }}>
         <div className="card" style={{ padding: 24 }}>
           <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 24 }}>Tasks by Status</h3>
@@ -124,7 +124,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Recent Tasks */}
+      {/* recent tasks table */}
       <div className="card" style={{ padding: 24 }}>
         <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 20 }}>Recent Tasks</h3>
         {stats?.recentTasks?.length > 0 ? (

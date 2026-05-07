@@ -1,6 +1,6 @@
 const { pool } = require('../config/db');
 
-// ─── Get All Projects (for current user) ──────────────────────────────────────
+// get projects for current user
 const getProjects = async (req, res) => {
   try {
     const userId = req.user.id;
@@ -22,7 +22,7 @@ const getProjects = async (req, res) => {
         LEFT JOIN tasks t ON t.project_id = p.id
         GROUP BY p.id, u.name
         ORDER BY p.created_at DESC
-      `;
+      `; // admins should probably see everything tbh
       params = [];
     } else {
       // Members see only their projects
@@ -44,7 +44,10 @@ const getProjects = async (req, res) => {
       params = [userId];
     }
 
+    // console.log("running query", query)
     const result = await pool.query(query, params);
+    
+    // TODO: add pagination here if projects table gets too big
     res.json({ success: true, projects: result.rows });
   } catch (error) {
     console.error('getProjects error:', error);
@@ -52,7 +55,7 @@ const getProjects = async (req, res) => {
   }
 };
 
-// ─── Get Single Project ────────────────────────────────────────────────────────
+// get a single project by id
 const getProject = async (req, res) => {
   try {
     const { id } = req.params;
@@ -88,7 +91,7 @@ const getProject = async (req, res) => {
   }
 };
 
-// ─── Create Project ────────────────────────────────────────────────────────────
+// create a new project
 const createProject = async (req, res) => {
   try {
     const { name, description, color } = req.body;
@@ -114,12 +117,12 @@ const createProject = async (req, res) => {
       project,
     });
   } catch (error) {
-    console.error('createProject error:', error);
+    console.error('createProject err:', error);
     res.status(500).json({ success: false, message: 'Server error.' });
   }
 };
 
-// ─── Update Project ────────────────────────────────────────────────────────────
+// update project details
 const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
@@ -149,7 +152,7 @@ const updateProject = async (req, res) => {
   }
 };
 
-// ─── Delete Project ────────────────────────────────────────────────────────────
+// delete project
 const deleteProject = async (req, res) => {
   try {
     const { id } = req.params;
@@ -170,7 +173,7 @@ const deleteProject = async (req, res) => {
   }
 };
 
-// ─── Add Member to Project ─────────────────────────────────────────────────────
+// add a member to the project
 const addMember = async (req, res) => {
   try {
     const { id: projectId } = req.params;
@@ -220,7 +223,7 @@ const addMember = async (req, res) => {
   }
 };
 
-// ─── Remove Member from Project ────────────────────────────────────────────────
+// remove member
 const removeMember = async (req, res) => {
   try {
     const { id: projectId, userId } = req.params;
