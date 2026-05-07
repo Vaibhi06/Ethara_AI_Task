@@ -137,6 +137,17 @@ export default function ProjectDetailPage() {
     catch (err) { toast.error(err.response?.data?.message || 'Failed to remove member'); }
   };
 
+  const handleDeleteProject = async () => {
+    if (!confirm('Are you sure you want to delete this project? All tasks will be lost.')) return;
+    try {
+      await projectsAPI.delete(id);
+      toast.success('Project deleted');
+      navigate('/projects');
+    } catch {
+      toast.error('Failed to delete project');
+    }
+  };
+
   if (loading) return <Layout title="Loading..."><div style={{ padding: 40, textAlign: 'center', color: 'var(--text-muted)' }}>Loading project...</div></Layout>;
   if (!project) return null;
 
@@ -156,6 +167,7 @@ export default function ProjectDetailPage() {
           </div>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
+          {isAdmin && <button className="btn btn-danger btn-sm" onClick={handleDeleteProject}><Trash2 size={15} /> Delete Project</button>}
           {isAdmin && <button className="btn btn-secondary btn-sm" onClick={() => setShowMember(true)}><UserPlus size={15} /> Add Member</button>}
           {isAdmin && <button className="btn btn-primary btn-sm" onClick={() => setShowTask(true)}><Plus size={15} /> New Task</button>}
         </div>
