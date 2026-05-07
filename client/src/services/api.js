@@ -33,7 +33,7 @@ api.interceptors.response.use(
   }
 );
 
-// ── Auth ──────────────────────────────────────────────────────
+// auth
 export const authAPI = {
   register: (data) => api.post('/auth/register', data),
   login: (data) => api.post('/auth/login', data),
@@ -41,7 +41,7 @@ export const authAPI = {
   logout: () => api.post('/auth/logout'),
 };
 
-// ── Projects ──────────────────────────────────────────────────
+// projects
 export const projectsAPI = {
   getAll: () => api.get('/projects'),
   getOne: (id) => api.get(`/projects/${id}`),
@@ -52,7 +52,7 @@ export const projectsAPI = {
   removeMember: (id, userId) => api.delete(`/projects/${id}/members/${userId}`),
 };
 
-// ── Tasks ─────────────────────────────────────────────────────
+// tasks
 export const tasksAPI = {
   getAll: (params) => api.get('/tasks', { params }),
   getOne: (id) => api.get(`/tasks/${id}`),
@@ -62,13 +62,13 @@ export const tasksAPI = {
   delete: (id) => api.delete(`/tasks/${id}`),
 };
 
-// ── Dashboard ─────────────────────────────────────────────────
+// dashboard
 export const dashboardAPI = {
   stats: () => api.get('/dashboard/stats'),
   overdue: () => api.get('/dashboard/overdue'),
 };
 
-// ── Users ─────────────────────────────────────────────────────
+// users
 export const usersAPI = {
   getAll: () => api.get('/users'),
   getOne: (id) => api.get(`/users/${id}`),

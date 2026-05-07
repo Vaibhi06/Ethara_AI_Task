@@ -2,14 +2,14 @@ const { Pool } = require('pg');
 const fs = require('fs');
 const path = require('path');
 
-// ─── Guard: check DATABASE_URL exists ─────────────────────────────────────────
+// guard: check db url exists
 if (!process.env.DATABASE_URL) {
   console.error('❌ DATABASE_URL is not set!');
   console.error('   → On Railway: add variable DATABASE_URL = ${{ Postgres.DATABASE_URL }}');
   console.error('   → Locally: set it in server/.env');
 }
 
-// ─── Smart SSL detection ───────────────────────────────────────────────────────
+// smart ssl detection
 // Railway internal URL (postgres.railway.internal) → NO SSL needed
 // Railway public URL (rlwy.net) or other external hosts → SSL required
 const dbUrl = process.env.DATABASE_URL || '';

@@ -1,6 +1,6 @@
 const { pool } = require('../config/db');
 
-// ─── Check if user is a member of a project ───────────────────────────────────
+// check if user is a member of a project
 const requireProjectMember = async (req, res, next) => {
   try {
     const projectId = req.params.projectId || req.params.id || req.body.project_id;
@@ -31,7 +31,7 @@ const requireProjectMember = async (req, res, next) => {
   }
 };
 
-// ─── Check if user is project-level admin ─────────────────────────────────────
+// check if user is project-level admin
 const requireProjectAdmin = async (req, res, next) => {
   try {
     const projectId = req.params.projectId || req.params.id || req.body.project_id;

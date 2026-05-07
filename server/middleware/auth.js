@@ -1,7 +1,7 @@
 const { verifyToken } = require('../utils/jwtUtils');
 const { pool } = require('../config/db');
 
-// ─── Authenticate JWT Token ────────────────────────────────────────────────────
+// authenticate jwt token
 const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -44,7 +44,7 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-// ─── Require System-level Admin Role ──────────────────────────────────────────
+// require system-level admin role
 const requireAdmin = (req, res, next) => {
   if (req.user.role !== 'admin') {
     return res.status(403).json({

@@ -4,7 +4,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
 const { pool } = require('./db');
 
-// ─── Local Strategy (Email + Password) ────────────────────────────────────────
+// local strategy (email + password)
 passport.use(
   new LocalStrategy(
     { usernameField: 'email', passwordField: 'password' },
@@ -43,7 +43,7 @@ passport.use(
   )
 );
 
-// ─── Google OAuth Strategy ─────────────────────────────────────────────────────
+// google oauth strategy
 // Only register if credentials are present (prevents crash when env vars not set)
 if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   passport.use(
@@ -107,7 +107,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 }
 
 
-// ─── Session Serialization ─────────────────────────────────────────────────────
+// session serialization
 passport.serializeUser((user, done) => done(null, user.id));
 
 passport.deserializeUser(async (id, done) => {
